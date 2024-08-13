@@ -1,6 +1,7 @@
 package files
 
 import (
+	"os"
 	"testing"
 )
 
@@ -24,5 +25,10 @@ func TestOpenCloseFile(t *testing.T) {
 	if err != nil {
 		t.Errorf("CloseFile() error = %v", err)
 		return
+	}
+	// Cleanup
+	err = os.Remove(arg.filepath)
+	if err != nil {
+		t.Errorf("Error removing file while cleaning up: %v", err)
 	}
 }
