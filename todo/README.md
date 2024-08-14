@@ -2,25 +2,27 @@
 
 ## Goal
 
-Create an cli application for managing tasks in the terminal.
+A CLI-based todo list application that allows you to add, list, complete and delete tasks from a data store.
+
+## Getting Started
+
+To get started, clone the repository and build the application:
 
 ```
-$ tasks
+$ go build -o todo
 ```
 
-## Requirements
-
-Should be able to perform crud operations via a cli on a data file of tasks. The operations should be as follows:
+Then you can run the application and understand how to use it by running the following:
 
 ```
-$ tasks add "My new task"
-$ tasks list
-$ tasks complete
+$ ./todo
 ```
+
+## How to use
 
 ### Add
 
-The add method should be used to create new tasks in the underlying data store. It should take a positional argument with the task description
+The add method is used to create new tasks in the underlying data store. It takes a list of arguments with the task description
 
 ```
 $ tasks add <description>
@@ -30,13 +32,12 @@ for example:
 
 ```
 $ tasks add "Tidy my desk"
+$ tasks add "Fix my schedule" "Write up documentation for new project feature" "Clean shoes"
 ```
-
-should add a new task with the description of "Tidy my desk"
 
 ### List
 
-This method should return a list of all of the **uncompleted** tasks, with the option to return all tasks regardless of whether or not they are completed.
+This method returns a list of all of the **uncompleted** tasks, with the option to return all tasks regardless of whether or not they are completed.
 
 for example:
 
@@ -47,7 +48,7 @@ ID    Task                                                Created
 3     Change my keyboard mapping to use escape/control    a few seconds ago
 ```
 
-or for showing all tasks, using a flag (such as -a or --all)
+or for showing all tasks, using a flag -a or --all
 
 ```
 $ tasks list -a
@@ -59,15 +60,22 @@ ID    Task                                                Created          Done
 
 ### Complete
 
-To mark a task as done, add in the following method
+To mark a task as done, use the following method
 
 ```
 $ tasks complete <taskid>
 ```
 
+for example
+
+```
+$ tasks complete 1
+$ tasks complete 2 3
+```
+
 ### Delete
 
-The following method should be implemented to delete a task from the data store
+The following method deletes a task from the data store
 
 ```
 $ tasks delete <taskid>
@@ -82,15 +90,9 @@ $ tasks delete <taskid>
 - `github.com/spf13/cobra` for the command line interface
 - `github.com/mergestat/timediff` for displaying relative friendly time differences (1 hour ago, 10 minutes ago, etc)
 
-## Custom Resources
+### Data File
 
-### Example Application
-
-You can find an [example version](https://github.com/dreamsofcode-io/goprojects/releases/tag/0.1.0) of this todo list on the releases tab of this repo.
-
-### Example Data File
-
-Additionally, an example CSV looks like as follows:
+The Data File used is a CSV file with the following columns:
 
 ```
 ID,Description,CreatedAt,IsComplete
@@ -138,8 +140,12 @@ func closeFile(f *os.File) error {
 }
 ```
 
-## Extra Features
+## Extra Features for the Future
 
 - Change the IsComplete property of the Task data model to use a timestamp instead, which gives further information.
 - Change from CSV to JSON, JSONL or SQLite
 - Add in an optional due date to the tasks
+
+## Credit
+
+This project is a modified version of 1 of the projects proposed in this repository by dreamsofcode: https://github.com/dreamsofcode-io/goprojects/tree/main
