@@ -10,7 +10,7 @@ import (
 var exampleTask = Task{
 	ID:          1,
 	Description: "task",
-	CreatedAt:   "2021-01-01",
+	CreatedAt:   "2024-08-14T13:05:38+02:00",
 	IsComplete:  false,
 }
 
@@ -29,7 +29,7 @@ func Test_parseTask(t *testing.T) {
 	}{
 		{
 			name: "parse example task",
-			args: args{data: []string{"1", "task", "2021-01-01", "false"}},
+			args: args{data: []string{"1", "task", exampleTask.CreatedAt, "false"}},
 			want: exampleTask,
 		},
 		{
@@ -39,17 +39,17 @@ func Test_parseTask(t *testing.T) {
 		},
 		{
 			name:    "error on parse more fields than expected",
-			args:    args{data: []string{"1", "task", "2021-01-01", "false", "extra"}},
+			args:    args{data: []string{"1", "task", exampleTask.CreatedAt, "false", "extra"}},
 			wantErr: true,
 		},
 		{
 			name:    "error on parse invalid id",
-			args:    args{data: []string{"a", "task", "2021-01-01", "false"}},
+			args:    args{data: []string{"a", "task", exampleTask.CreatedAt, "false"}},
 			wantErr: true,
 		},
 		{
 			name:    "error on parse invalid isComplete",
-			args:    args{data: []string{"1", "task", "2021-01-01", "invalid"}},
+			args:    args{data: []string{"1", "task", exampleTask.CreatedAt, "invalid"}},
 			wantErr: true,
 		},
 	}
@@ -83,7 +83,7 @@ func Test_createTask(t *testing.T) {
 			want: Task{
 				ID:          0,
 				Description: "task",
-				CreatedAt:   time.Now().Format(time.DateOnly),
+				CreatedAt:   time.Now().Format(time.RFC3339),
 				IsComplete:  false,
 			},
 		},
@@ -118,7 +118,7 @@ func Test_convertTaskForCSV(t *testing.T) {
 		{
 			name: "convert example task",
 			args: args{task: exampleTask},
-			want: []string{"1", "task", "2021-01-01", "false"},
+			want: []string{"1", "task", exampleTask.CreatedAt, "false"},
 		},
 		{
 			name: "convert empty task",
@@ -135,11 +135,19 @@ func Test_convertTaskForCSV(t *testing.T) {
 	}
 }
 
+func integrationCleanup(t *testing.T) {
+	// Cleanup
+	err := os.Remove(csvFileLocation)
+	if err != nil {
+		t.Errorf("FullIntegrationTest() error on cleanup, couldnt delete file: %v", err)
+	}
+}
+
 func Test_FullIntegrationTest(t *testing.T) {
 	var wantedTask = Task{
 		ID:          0,
 		Description: "task",
-		CreatedAt:   time.Now().Format(time.DateOnly),
+		CreatedAt:   time.Now().Format(time.RFC3339),
 		IsComplete:  false,
 	}
 	// Create a task
@@ -148,6 +156,7 @@ func Test_FullIntegrationTest(t *testing.T) {
 		t.Errorf("FullIntegrationTest() error on createTask: %v", err)
 		return
 	}
+	defer integrationCleanup(t)
 
 	tasks, err := GetTasks(csvFileLocation, true)
 	if err != nil {
@@ -240,9 +249,4 @@ func Test_FullIntegrationTest(t *testing.T) {
 		return
 	}
 
-	// Cleanup
-	err = os.Remove(csvFileLocation)
-	if err != nil {
-		t.Errorf("FullIntegrationTest() error on cleanup, couldnt delete file: %v", err)
-	}
 }

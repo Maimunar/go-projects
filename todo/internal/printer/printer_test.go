@@ -1,9 +1,12 @@
 package printer
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/maimunar/todo/internal/csv"
+	"github.com/mergestat/timediff"
 )
 
 func Test_getHeader(t *testing.T) {
@@ -36,12 +39,14 @@ func Test_getHeader(t *testing.T) {
 }
 
 func Test_formatTaskCsv(t *testing.T) {
+	taskCreated := time.Now().Format(time.RFC3339)
 	exampleTask := csv.Task{
 		ID:          1,
 		Description: "task",
-		CreatedAt:   "2021-01-01",
+		CreatedAt:   taskCreated,
 		IsComplete:  false,
 	}
+	taskWantedTime, _ := time.Parse(time.RFC3339, taskCreated)
 
 	type args struct {
 		task csv.Task
@@ -55,22 +60,22 @@ func Test_formatTaskCsv(t *testing.T) {
 		{
 			name: "normal task, all is true",
 			args: args{task: exampleTask, all: true},
-			want: "1\ttask\t2021-01-01\tfalse\t",
+			want: fmt.Sprintf("1\ttask\t%v\tfalse\t", timediff.TimeDiff(taskWantedTime)),
 		},
 		{
 			name: "normal task, all is false",
 			args: args{task: exampleTask, all: false},
-			want: "1\ttask\t2021-01-01\t",
+			want: fmt.Sprintf("1\ttask\t%v\t", timediff.TimeDiff(taskWantedTime)),
 		},
 		{
 			name: "empty task, all is true",
 			args: args{task: csv.Task{}, all: true},
-			want: "0\t\t\tfalse\t",
+			want: "",
 		},
 		{
 			name: "empty task, all is false",
 			args: args{task: csv.Task{}, all: false},
-			want: "0\t\t\t",
+			want: "",
 		},
 	}
 

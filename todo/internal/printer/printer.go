@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 	"text/tabwriter"
+	"time"
 
 	"github.com/maimunar/todo/internal/csv"
+	"github.com/mergestat/timediff"
 )
 
 const header = "ID\tTask\tCreated\t"
@@ -19,10 +21,16 @@ func getHeader(all bool) string {
 }
 
 func formatTaskCsv(task csv.Task, all bool) string {
-	if all {
-		return fmt.Sprintf("%v\t%v\t%v\t%v\t", task.ID, task.Description, task.CreatedAt, task.IsComplete)
+	taskTime, err := time.Parse(time.RFC3339, task.CreatedAt)
+	if err != nil {
+		fmt.Errorf("Error	while parsing time %v", err)
+		return ""
 	}
-	return fmt.Sprintf("%v\t%v\t%v\t", task.ID, task.Description, task.CreatedAt)
+	tDiff := timediff.TimeDiff(taskTime)
+	if all {
+		return fmt.Sprintf("%v\t%v\t%v\t%v\t", task.ID, task.Description, tDiff, task.IsComplete)
+	}
+	return fmt.Sprintf("%v\t%v\t%v\t", task.ID, task.Description, tDiff)
 }
 
 func PrintTasks(tasks []csv.Task, all bool) {

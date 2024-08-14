@@ -55,7 +55,7 @@ func createTask(csvFile string, description string) (Task, error) {
 		}
 	}
 
-	createdAt := time.Now().Format(time.DateOnly)
+	createdAt := time.Now().Format(time.RFC3339)
 
 	return Task{
 		ID:          id,
