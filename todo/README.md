@@ -107,6 +107,14 @@ ID,Description,CreatedAt,IsComplete
 3,Find a video editor,2024-07-27T16:45:31-05:00,false
 ```
 
+## Testing
+
+The project's internal packages are covered with a suite or unit and integration tests. To run them, use the go testing package:
+
+```
+go test ./...
+```
+
 ## Technical Considerations
 
 ### Stderr vs Stdout
