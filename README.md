@@ -1,6 +1,6 @@
-# go-projects
+# Go Projects
 
-Some golang sample projects to understand the language with
+Various Golang projects exploring different language concepts
 
 ## TODO App
 
