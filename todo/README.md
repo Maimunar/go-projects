@@ -18,6 +18,8 @@ Then you can run the application and understand how to use it by running the fol
 $ ./todo
 ```
 
+If you do not have a go environment set up, you can use the pre-built binary in the repository by using the command above and skipping the build step.
+
 ## How to use
 
 ### Add
