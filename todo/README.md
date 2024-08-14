@@ -83,6 +83,10 @@ The following method deletes a task from the data store
 $ tasks delete <taskid>
 ```
 
+## Example Usage
+
+![Example Usage Screenshot](image.png)
+
 ## Notable Packages Used
 
 - `encoding/csv` for writing out as a csv file
