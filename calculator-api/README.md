@@ -57,8 +57,3 @@ Some of the packages that I used for my implementation include:
 ## Resources
 
 You can access my implementation of this API at [https://calculator.dreamsofcode.io](https://calculator-api.dreamsofcode.io)
-
-## Additional Tasks
-
-- Add in rate limiter to prevent misuse of the API
-- Add in a middleware that adds a request ID to the http.Request object.

@@ -68,8 +68,6 @@ func (r *SQLiteRepository) AddCalculation(input string, output int) error {
 	_, err = stmt.Exec(id, input, output)
 	defer stmt.Close()
 
-	fmt.Printf("Added %v %v \n", input, output)
-
 	return err
 }
 

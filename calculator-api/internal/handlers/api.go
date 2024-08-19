@@ -7,7 +7,9 @@ import (
 )
 
 func Handler(r *gin.Engine, repo *database.SQLiteRepository) {
+	r.Use(middleware.RateLimiter)
 	r.Use(middleware.AuthMiddleWare)
+	r.Use(middleware.AddIdMiddleWare)
 
 	r.POST("/add", AddHandler(repo))
 	r.POST("/subtract", SubtractHandler(repo))
