@@ -5,12 +5,17 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/maimunar/calculator-api/internal/database"
 	"github.com/maimunar/calculator-api/internal/handlers"
 )
 
 func main() {
 	r := gin.Default()
-	handlers.Handler(r)
+
+	repo := database.OpenDB()
+	defer repo.Close()
+
+	handlers.Handler(r, &repo)
 
 	fmt.Println("Starting GO API service...")
 
